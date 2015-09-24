@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="primary">#00C158</color>
+    <color name="primary">#329E29</color>
+    <color name="primary">#40a83c</color>-->
+    <color name="primary">#39B54A</color>
+    <color name="primary_dark">#2E8841</color>
+    <color name="primary_light">#C8E6C9</color>
+    <color name="accent">#84A17D</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#84A17D</color>
+
+    <color name="bezienswaardigheid">#aaaaaa</color>
+    <color name="cafe">#f56e0a</color>
+    <color name="restaurant">#aa418c</color>
+    <color name="parking">#235f91</color>
+    <color name="dienst">#28b9af</color>
+    <color name="bank">#f9b419</color>
+    <color name="wc">#0f967d</color>
+    <color name="winkel">#fa4696</color>
+    <color name="ontspanning">#644ba5</color>
+    <color name="hotel">#5a5a5a</color>
+    <color name="apotheek">#69c850</color>
+    <color name="ziekenhuis">#dc463c</color>
+
+</resources>
