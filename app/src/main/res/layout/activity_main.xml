@@ -25,7 +25,7 @@
         android:layout_alignParentRight="true"
         android:text="Send" />
 
-    <ScrollView
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/mInputMessageView"
@@ -38,6 +38,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </ScrollView>
+    </ScrollView>-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_chatmessages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/mInputMessageView"/>
 
 </RelativeLayout>

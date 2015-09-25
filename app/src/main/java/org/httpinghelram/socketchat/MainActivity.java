@@ -2,6 +2,8 @@ package org.httpinghelram.socketchat;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -16,14 +18,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String SERVER_URL = "http://ddbe-chat.eu-gb.mybluemix.net/";
 
     private Socket mSocket;
     private EditText mInputMessageView;
-    private TextView tv_text;
+    private RecyclerView mRecyclerview;
+    //private TextView tv_text;
     private Button btn_sendMessage;
+    private CustomChatAdapter mAdapter;
+
+    private ArrayList<ChatData> data = new ArrayList<>();
 
     {
         try {
@@ -39,7 +46,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mInputMessageView = (EditText) findViewById(R.id.mInputMessageView);
-        tv_text = (TextView) findViewById(R.id.tv_text);
+        //tv_text = (TextView) findViewById(R.id.tv_text);
+        mRecyclerview = (RecyclerView) findViewById(R.id.rv_chatmessages);
+        mAdapter = new CustomChatAdapter(data);
+        mRecyclerview.setAdapter(mAdapter);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setReverseLayout(true);
+        mRecyclerview.setLayoutManager(mLayoutManager);
+
         btn_sendMessage = (Button) findViewById(R.id.btn_sendMessage);
 
         btn_sendMessage.setOnClickListener(new View.OnClickListener() {
@@ -69,8 +83,14 @@ public class MainActivity extends AppCompatActivity {
         mSocket.send(jsonMessage);
     }
 
-    private void addMessage(String username, String message) {
-        tv_text.setText(tv_text.getText() + "\n" + username + ": " + message);
+    private void addMessage(String username, String message, boolean ownText) {
+        //tv_text.setText(tv_text.getText() + "\n" + username + ": " + message);
+        ChatData chatData = new ChatData();
+        chatData.setUsername(username);
+        chatData.setContent(message);
+        chatData.setIsOwnText(ownText);
+        data.add(0, chatData);
+        mAdapter.updateData();
     }
 
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
@@ -91,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     // add the message to view
-                    addMessage(username, message);
+                    boolean ownText = username.equals("Pieter");
+                    addMessage(username, message, ownText);
                 }
             });
         }
