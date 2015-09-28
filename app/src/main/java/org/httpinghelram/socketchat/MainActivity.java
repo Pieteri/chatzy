@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Socket mSocket;
     private EditText mInputMessageView;
-    private RecyclerView mRecyclerview;
+    //private RecyclerView mRecyclerview;
     //private TextView tv_text;
     private Button btn_sendMessage;
     private CustomChatAdapter mAdapter;
@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mInputMessageView = (EditText) findViewById(R.id.mInputMessageView);
         //tv_text = (TextView) findViewById(R.id.tv_text);
-        mRecyclerview = (RecyclerView) findViewById(R.id.rv_chatmessages);
+        RecyclerView mRecyclerview = (RecyclerView) findViewById(R.id.rv_chatmessages);
+        //data = new ArrayList<>();
         mAdapter = new CustomChatAdapter(data);
         mRecyclerview.setAdapter(mAdapter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -65,6 +66,27 @@ public class MainActivity extends AppCompatActivity {
         mSocket.on("package", onNewMessage); //package = definded by server
         mSocket.connect();
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("chatlist", data);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        ArrayList<ChatData> mydata = savedInstanceState.getParcelableArrayList("chatlist");
+        data.addAll(mydata);
+        mAdapter.updateData();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+
 
     private void attemptSend() {
         String message = mInputMessageView.getText().toString().trim();
@@ -85,10 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void addMessage(String username, String message, boolean ownText) {
         //tv_text.setText(tv_text.getText() + "\n" + username + ": " + message);
-        ChatData chatData = new ChatData();
-        chatData.setUsername(username);
-        chatData.setContent(message);
-        chatData.setIsOwnText(ownText);
+        ChatData chatData = new ChatData(ownText, message, username);
         data.add(0, chatData);
         mAdapter.updateData();
     }
