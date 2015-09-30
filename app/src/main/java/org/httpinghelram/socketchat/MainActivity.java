@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String SERVER_URL = "http://ddbe-chat.eu-gb.mybluemix.net/";
+    private static final String SERVER_URL = "http://ddbe-chat-clyde.eu-gb.mybluemix.net/";
 
     private Socket mSocket;
     private EditText mInputMessageView;
@@ -42,14 +42,17 @@ public class MainActivity extends AppCompatActivity {
         tv_text = (TextView) findViewById(R.id.tv_text);
         btn_sendMessage = (Button) findViewById(R.id.btn_sendMessage);
 
+
+        mSocket.on("package", onNewMessage); //package = definded by server
+        mSocket.connect();
+
+
         btn_sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 attemptSend();
             }
         });
-        mSocket.on("package", onNewMessage); //package = definded by server
-        mSocket.connect();
     }
 
     private void attemptSend() {
